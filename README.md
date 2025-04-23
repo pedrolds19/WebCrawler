@@ -1,4 +1,5 @@
 Web Crawler para Proxy Servers
+
 Este projeto é um Web Crawler que coleta proxies de um site e grava as informações em um arquivo JSON. Além disso, ele salva o HTML de cada página processada.
 
 Funcionalidades
