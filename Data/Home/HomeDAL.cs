@@ -1,11 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using WebCrawler.Data;  // Certifique-se de importar seu DbContext
-
+﻿using Models;
+using WebCrawler.Data;  
 namespace Data.Home
 {
     public class HomeDAL
@@ -22,9 +16,8 @@ namespace Data.Home
         {
             try
             {
-                // Adiciona o log na tabela CrawlerLogs
                 await _context.CrawlerLogs.AddAsync(log);
-                await _context.SaveChangesAsync(); // Salva no banco de dados
+                await _context.SaveChangesAsync(); 
 
                 Console.WriteLine("Log gravado com sucesso!");
             }

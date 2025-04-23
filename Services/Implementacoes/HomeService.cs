@@ -1,36 +1,31 @@
-﻿
-using Data.Home;
-using Microsoft.Data.SqlClient;
+﻿using Data.Home;
 using Models;
 using Newtonsoft.Json;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using Services.Interfaces;
 
-
 namespace Services.Implementacoes
 {
     public class HomeService : IHomeService
     {
+        private readonly HomeDAL _homedal;
 
-        private readonly HomeDAL _homedal; 
-        public HomeService(HomeDAL homedal) {
+        public HomeService(HomeDAL homedal)
+        {
             _homedal = homedal;
         }
 
-        public async Task Iniciar()
+        public async Task<CrawlerLogs> Iniciar()
         {
-            //_homedal.TestarConexao();
-            IniciarCrawler(); 
-        }
-        private async Task IniciarCrawler()
-        {
-
             var startTime = DateTime.Now;
 
             var options = new ChromeOptions();
-            options.AddArgument("--headless"); // ✅ invisível
+            options.AddArgument("--headless");
             options.AddArgument("--disable-gpu");
+
+         
+            Console.WriteLine($"Iniciando serviço...");
 
             using (var driver = new ChromeDriver(options))
             {
@@ -82,12 +77,10 @@ namespace Services.Implementacoes
                     JsonPath = filePath
                 };
 
-                await _homedal.GravarLog(log);
-
                 Console.WriteLine($"Arquivo JSON salvo em: {filePath}");
+
+                return log;
             }
         }
-
     }
-
 }
