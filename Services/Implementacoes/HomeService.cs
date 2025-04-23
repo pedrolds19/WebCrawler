@@ -1,16 +1,12 @@
-﻿using Data.Home;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
+﻿
+using Data.Home;
+using Microsoft.Data.SqlClient;
 using Models;
 using Newtonsoft.Json;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using Services.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace Services.Implementacoes
 {
@@ -24,7 +20,8 @@ namespace Services.Implementacoes
 
         public async Task Iniciar()
         {
-            IniciarCrawler();
+            //_homedal.TestarConexao();
+            IniciarCrawler(); 
         }
         private async Task IniciarCrawler()
         {
@@ -32,6 +29,8 @@ namespace Services.Implementacoes
             var startTime = DateTime.Now;
 
             var options = new ChromeOptions();
+            options.AddArgument("--headless"); // ✅ invisível
+            options.AddArgument("--disable-gpu");
 
             using (var driver = new ChromeDriver(options))
             {
@@ -42,7 +41,6 @@ namespace Services.Implementacoes
                 while (true)
                 {
                     driver.Navigate().GoToUrl($"https://pt.proxyservers.pro/proxy/list/order/updated/order_dir/desc/page/{page}");
-                    Thread.Sleep(3000); 
 
                     var rows = driver.FindElements(By.CssSelector("table tbody tr"));
                     if (rows == null || rows.Count == 0)

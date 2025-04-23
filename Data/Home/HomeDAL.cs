@@ -1,43 +1,37 @@
-﻿using Dapper;
-using Microsoft.Data.SqlClient;
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.EntityFrameworkCore;
 using Models;
 using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
+using WebCrawler.Data;  // Certifique-se de importar seu DbContext
 
 namespace Data.Home
 {
     public class HomeDAL
     {
-        private readonly string _connectionString;
+        private readonly ApplicationDbContext _context;
 
-        public HomeDAL(IConfiguration configuration)
+        public HomeDAL(ApplicationDbContext context)
         {
-            _connectionString = configuration.GetConnectionString("DefaultConnection");
+            _context = context;
         }
+
+
         public async Task GravarLog(CrawlerLogs log)
         {
-            using var connection = new SqlConnection(_connectionString);
-            await connection.OpenAsync();
+            try
+            {
+                // Adiciona o log na tabela CrawlerLogs
+                await _context.CrawlerLogs.AddAsync(log);
+                await _context.SaveChangesAsync(); // Salva no banco de dados
 
-            await connection.ExecuteAsync(
-                "SPI_GRAVAR_LOG",
-                new
-                {
-                    StartTime = log.StartTime,
-                    EndTime = log.EndTime,
-                    TotalPages = log.TotalPages,
-                    TotalRows = log.TotalRows,
-                    JsonPath = log.JsonPath
-                },
-                commandType: CommandType.StoredProcedure
-            );
+                Console.WriteLine("Log gravado com sucesso!");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Erro ao gravar log: {ex.Message}");
+            }
         }
-
-
     }
 }
