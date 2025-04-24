@@ -18,3 +18,8 @@ Requisitos
 Selenium WebDriver (Chrome).
 
 SQL Server (ou outro banco de dados compatível).
+
+Observações:
+
+Certifique-se de que o arquivo appsettings.json esteja sendo copiado para a pasta bin/Debug ou bin/Release.
+
