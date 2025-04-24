@@ -12,7 +12,8 @@ Salva o HTML de cada página processada.
 Registra logs no banco de dados.
 
 Requisitos
-.NET 6 ou superior.
+
+.NET 8 ou superior.
 
 Selenium WebDriver (Chrome).
 
